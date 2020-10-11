@@ -122,7 +122,7 @@ double get_value(string s)
 
 void set_value(string s, double d)
 {
-	for (int i = 0; i <= names.size(); ++i)
+	for (int i = 0; i < names.size(); ++i)
 		if (names[i].name == s) {
 			names[i].value = d;
 			return;
@@ -156,7 +156,16 @@ double primary()
 	case number:
 		return t.value;
 	case name:
+	{
+		Token tt = ts.get();
+		if(tt.kind == '=') {
+			double d = expression();
+			set_value(t.name, d);
+			return d;
+		}
+		ts.unget(tt);
 		return get_value(t.name);
+	}
 	case sqrt_token:
 		{
 			double d = primary();

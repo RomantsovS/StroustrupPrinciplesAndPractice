@@ -31,11 +31,13 @@ public:
 };
 
 const char let = 'L';
+const char const_token = 'C';
 const char quit = 'Q';
 const char print = ';';
 const char number = '8';
 const char name = 'a';
 const string declkey = "let";
+const string declconstkey = "const";
 const string sqrt_key = "sqrt";
 const char sqrt_token = 'S';
 const string pow_key = "pow";
@@ -82,8 +84,9 @@ Token Token_stream::get()
 			while (cin.get(ch) && (isalpha(ch) || isdigit(ch) || ch == '_')) s += ch;
 			cin.unget();
 			if (s == declkey) return Token(let);
-			if(s == sqrt_key) return Token(sqrt_token);
-			if(s == pow_key) return Token(pow_token);
+			else if(s == sqrt_key) return Token(sqrt_token);
+			else if(s == pow_key) return Token(pow_token);
+			else if(s == declconstkey) return Token(const_token);
 
 			return Token(name, s);
 		}
@@ -108,7 +111,9 @@ void Token_stream::ignore(char c)
 struct Variable {
 	string name;
 	double value;
-	Variable(string n, double v) :name(n), value(v) { }
+	bool constant;
+	Variable(string n, double v, bool c = false) :name(n), value(v),
+	constant(c) { }
 };
 
 vector<Variable> names;
@@ -122,8 +127,11 @@ double get_value(string s)
 
 void set_value(string s, double d)
 {
-	for (int i = 0; i <= names.size(); ++i)
+	for (int i = 0; i < names.size(); ++i)
 		if (names[i].name == s) {
+			if(names[i].constant)
+				error("set: constant name ", s);
+
 			names[i].value = d;
 			return;
 		}
@@ -156,7 +164,16 @@ double primary()
 	case number:
 		return t.value;
 	case name:
+	{
+		Token tt = ts.get();
+		if(tt.kind == '=') {
+			double d = expression();
+			set_value(t.name, d);
+			return d;
+		}
+		ts.unget(tt);
 		return get_value(t.name);
+	}
 	case sqrt_token:
 		{
 			double d = primary();
@@ -221,7 +238,7 @@ double expression()
 	}
 }
 
-double declaration()
+double declaration(const Token tok)
 {
 	Token t = ts.get();
 	if (t.kind != 'a') error("name expected in declaration");
@@ -230,7 +247,7 @@ double declaration()
 	Token t2 = ts.get();
 	if (t2.kind != '=') error("= missing in declaration of ", name);
 	double d = expression();
-	names.push_back(Variable(name, d));
+	names.push_back(Variable(name, d, tok.kind == const_token));
 	return d;
 }
 
@@ -238,8 +255,8 @@ double statement()
 {
 	Token t = ts.get();
 	switch (t.kind) {
-	case let:
-		return declaration();
+	case let: case const_token:
+		return declaration(t);
 	default:
 		ts.unget(t);
 		return expression();
