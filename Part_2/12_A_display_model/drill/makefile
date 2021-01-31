@@ -14,7 +14,7 @@ INCLUDES = -I"../../../GUI" $(FLTK)
 
 FLTKLIB = $(shell fltk-config --use-gl --use-images --ldflags )
 #LIBS     = -lstdc++ -lbookgui -lfltk -lfltk_images
-LIBS     = -lstdc++ $(FLTKLIB)
+LIBS     = -lstdc++ -lbookgui $(FLTKLIB)
 CXXFLAGS = $(INCLUDES) -Wall -time -O3 -DNDEBUG
 LIBFLAGS = -L"../../../GUI"
 AR       = ar
@@ -61,7 +61,7 @@ all: 	$(TARGETS)
 
 # A rule to build .exe file out of a .o file
 main.exe: main.o ../../../GUI/libbookgui.a
-	$(CXX) -o $@ $< $(LIBS)
+	$(CXX) -o $@ $(LIBFLAGS) $< $(LIBS)
 	@echo ================================================================================
 	@echo Done building $@
 	@echo ================================================================================
