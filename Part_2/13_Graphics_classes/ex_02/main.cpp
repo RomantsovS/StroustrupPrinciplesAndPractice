@@ -13,9 +13,8 @@ int main() {
 
     Simple_window win(tl,600,400,"Canvas");    // make a simple window
 
-    Box b{Point{200, 200}, 50, 50, 100};
+    Box b{Point{200, 20}, 150, 250, 50};
     win.attach(b);
-    //b.attach_arcs(win);
 
     win.wait_for_button();       // give control to the display engine
     

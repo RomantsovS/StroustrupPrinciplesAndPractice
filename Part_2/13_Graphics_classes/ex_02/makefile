@@ -86,6 +86,14 @@ box.o: box.cpp arc.h
 	@echo
 	@echo
 
+main.o: main.cpp arc.h box.h
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	@echo ================================================================================
+	@echo Done compiling $@
+	@echo ================================================================================
+	@echo
+	@echo
+
 # A rule to build the common GUI library
 ../../../GUI/libbookgui.a: ../../../GUI/*.h ../../../GUI/*.cpp
 	@(cd ../../../GUI; $(MAKE))

@@ -3,7 +3,7 @@
 namespace Graph_lib {
 
 Arc::Arc(const Arc& r) {
-	for(size_t i = 0; i < r.number_of_points(); ++i) {
+	for(int i = 0; i < r.number_of_points(); ++i) {
 		add(r.point(i));
 	}
 
@@ -14,7 +14,7 @@ Arc::Arc(const Arc& r) {
 }
 
 Arc& Arc::operator=(const Arc& r) {
-	for(size_t i = 0; i < r.number_of_points(); ++i) {
+	for(int i = 0; i < r.number_of_points(); ++i) {
 		add(r.point(i));
 	}
 
