@@ -52,8 +52,8 @@ struct Color {
     char visibility() const { return v; } 
     void set_visibility(Transparency vv) { v=vv; }
 private:
+    Fl_Color c;//
     char v;    // invisible and visible for now
-    Fl_Color c;
 };
 
 //------------------------------------------------------------------------------
@@ -234,8 +234,8 @@ struct Rectangle : Shape {
     int height() const { return h; }
     int width() const { return w; }
 private:
-    int h;    // height
     int w;    // width
+    int h;    // height
 };
 
 //------------------------------------------------------------------------------

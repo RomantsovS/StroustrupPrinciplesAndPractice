@@ -15,6 +15,7 @@ INCLUDES = -I"../../../GUI" $(FLTK)
 FLTKLIB = $(shell fltk-config --use-gl --use-images --ldflags )
 #LIBS     = -lstdc++ -lbookgui -lfltk -lfltk_images
 LIBS     = -lstdc++ -lbookgui $(FLTKLIB)
+MYLIBS = main.o
 CXXFLAGS = $(INCLUDES) -Wall -time -O3 -g
 LIBFLAGS = -L"../../../GUI"
 AR       = ar
@@ -45,7 +46,7 @@ SOURCES  = $(shell ls *.cpp)
 # Create a list of object files from the source file lists.
 OBJECTS = ${SOURCES:.cpp=.o}     
 # Create a list of targets.
-TARGETS = ${SOURCES:.cpp=.exe}     
+TARGETS = main.exe
 
 # Build all targets by default
 all: 	$(TARGETS)
@@ -60,8 +61,8 @@ all: 	$(TARGETS)
 	@echo
 
 # A rule to build .exe file out of a .o file
-main.exe: main.o ../../../GUI/libbookgui.a
-	$(CXX) -o $@ $(LIBFLAGS) $< $(LIBS)
+main.exe: $(MYLIBS) ../../../GUI/libbookgui.a
+	$(CXX) -o $@ $(LIBFLAGS) $(MYLIBS) $(LIBS)
 	@echo ================================================================================
 	@echo Done building $@
 	@echo ================================================================================
@@ -70,6 +71,14 @@ main.exe: main.o ../../../GUI/libbookgui.a
 
 # A rule to build .o file out of a .cpp file
 %.o: %.cpp 
+	$(CXX) $(CXXFLAGS) -o $@ -c $<
+	@echo ================================================================================
+	@echo Done compiling $@
+	@echo ================================================================================
+	@echo
+	@echo
+
+main.o: main.cpp
 	$(CXX) $(CXXFLAGS) -o $@ -c $<
 	@echo ================================================================================
 	@echo Done compiling $@
