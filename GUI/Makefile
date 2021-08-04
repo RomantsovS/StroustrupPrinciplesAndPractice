@@ -12,7 +12,7 @@
 FLTK = $(shell fltk-config --use-gl --use-images --cxxflags ) -I.
 INCLUDES = $(FLTK)
 LIBS     = -lstdc++
-CXXFLAGS = $(INCLUDES) -Wall -time -O3 -g
+CXXFLAGS = $(INCLUDES) -Wall -time -O0 -g
 LIBFLAGS =  
 AR       = ar
 
