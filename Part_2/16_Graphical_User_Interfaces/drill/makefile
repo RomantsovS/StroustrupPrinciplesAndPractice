@@ -16,7 +16,7 @@ FLTKLIB = $(shell fltk-config --use-gl --use-images --ldflags )
 #LIBS     = -lstdc++ -lbookgui -lfltk -lfltk_images
 LIBS     = -lstdc++ -lbookgui $(FLTKLIB)
 MYLIBS = main.o
-CXXFLAGS = $(INCLUDES) -Wall -time -O3 -g
+CXXFLAGS = $(INCLUDES) -Wall -time -O0 -g
 LIBFLAGS = -L"../../../GUI"
 AR       = ar
 
